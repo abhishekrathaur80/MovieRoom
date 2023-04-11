@@ -10,15 +10,20 @@ const [searchTerm ,setSearchTerm] = useState('');
 const [movies,setMovies] = useState([]);
 
 useEffect(()=>{
-searchMovies('Batman')
+//searchMovies('Batman')
 
-} , [])
+} , [searchTerm])
 
 const searchMovies = async(title)=>{
     const response = await fetch(`${API_URL}&s=${title}`);
     const data = await response.json();
     setMovies(data.Search)
 }
+    const handleKeyPress = (event) => {
+        if (event.key === "Enter") {
+            searchMovies(searchTerm);
+        }
+    };
 
 
   return (
@@ -26,11 +31,12 @@ const searchMovies = async(title)=>{
     <h1>MovieLand</h1>
 
     <div className='search'>
-        <input  value={searchTerm} onChange={(e)=>setSearchTerm(e.target.value) } placeholder='Search for movies'/>
+        <input  value={searchTerm} onChange={(e)=>setSearchTerm(e.target.value) } placeholder='Search for movies'  onKeyDown={handleKeyPress}/>
         <img
        src={SearchIcon}
           alt="search"
           onClick={() => searchMovies(searchTerm)}
+        
         />
     </div>
 {movies?.length >0? (
